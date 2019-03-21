@@ -9,6 +9,7 @@ import {
 } from "react-native";
 import { Location, Camera, Permissions, Constants } from "expo";
 import APIKey from "../env/APIKey";
+import HitBox from "../env/HitBox";
 
 class PeseudoAR extends Component {
   state = {
@@ -74,6 +75,10 @@ class PeseudoAR extends Component {
     if (hasCameraPermission === null) return <View />;
     if (hasCameraPermission === false) return <Text>No access to camera</Text>;
     if (hasLocationPermission === false) return <Text>No access to GPS</Text>;
+
+    const hitResult =
+      this.state.location &&
+      (this.state.location.indexOf(HitBox) === -1 ? "" : "ここがあの...");
 
     return (
       <View style={{ flex: 1 }}>
@@ -141,6 +146,27 @@ class PeseudoAR extends Component {
             </Text>
           </View>
         </View>
+        {!!hitResult ? (
+          <View
+            style={{
+              position: "absolute",
+              flex: 1,
+              alignSelf: "center",
+              alignItems: "center",
+              justifyContent: "center",
+              width: "100%",
+              height: "100%"
+            }}
+          >
+            <Text
+              style={{ fontSize: 18, backgroundColor: "black", color: "white" }}
+            >
+              {hitResult}
+            </Text>
+          </View>
+        ) : (
+          <View />
+        )}
         <View
           style={{
             position: "absolute",
